@@ -274,12 +274,6 @@ Les tests couvrent :
 npm run lint
 ```
 
-#### Backend
-```bash
-cd backend
-ruff check .
-```
-
 ### Type checking
 ```bash
 npm run type-check
