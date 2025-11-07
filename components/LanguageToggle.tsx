@@ -16,15 +16,15 @@ export function LanguageToggle() {
   };
 
   return (
-    <div className="flex gap-1 bg-gray-100 dark:bg-slate-700 rounded-xl p-1 border border-gray-200 dark:border-slate-600">
+    <div className="flex gap-1 rounded-xl border border-gray-200 bg-gray-100 p-1 dark:border-slate-600 dark:bg-slate-700">
       {languages.map((lang) => (
         <button
           key={lang.value}
           onClick={() => handleLanguageChange(lang.value)}
-          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg focus-visible-ring transition-all ${
+          className={`focus-visible-ring flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 transition-all ${
             language === lang.value
-              ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md scale-105'
-              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'
+              ? 'scale-105 bg-blue-600 text-white shadow-md dark:bg-blue-500'
+              : 'text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-slate-600'
           }`}
           aria-label={`Switch to ${lang.label}`}
           aria-pressed={language === lang.value}
@@ -36,4 +36,3 @@ export function LanguageToggle() {
     </div>
   );
 }
-

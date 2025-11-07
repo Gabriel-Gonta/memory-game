@@ -10,7 +10,15 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { CustomGridModal } from '@/components/CustomGridModal';
 import { Modal } from '@/components/Modal';
-import { Users, Palette, Grid3x3, Play, Trophy, User, Sparkles } from 'lucide-react';
+import {
+  Users,
+  Palette,
+  Grid3x3,
+  Play,
+  Trophy,
+  User,
+  Sparkles,
+} from 'lucide-react';
 
 export default function HomePage() {
   const router = useRouter();
@@ -25,7 +33,7 @@ export default function HomePage() {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const t = useTranslation(); // Use the hook that subscribes to language changes
-  
+
   // Fix hydration mismatch by only rendering i18n content after mount
   useEffect(() => {
     setMounted(true);
@@ -47,18 +55,33 @@ export default function HomePage() {
   }, [numberOfPlayers]);
 
   // Fetch theme data for dynamic icon themes
-  const isDynamicIconTheme = localSettings.theme === 'icons' && localSettings.iconTheme && ['pokemon', 'dogs', 'movies', 'flags', 'fruits'].includes(localSettings.iconTheme);
+  const isDynamicIconTheme =
+    localSettings.theme === 'icons' &&
+    localSettings.iconTheme &&
+    ['pokemon', 'dogs', 'movies', 'flags', 'fruits'].includes(
+      localSettings.iconTheme
+    );
   const gridSize = localSettings.gridSize;
-  
+
   // Calculate limit based on grid size (number of pairs needed)
   let limit: number;
-  if (gridSize === 'custom' && localSettings.customWidth && localSettings.customHeight) {
-    limit = Math.ceil((localSettings.customWidth * localSettings.customHeight) / 2);
+  if (
+    gridSize === 'custom' &&
+    localSettings.customWidth &&
+    localSettings.customHeight
+  ) {
+    limit = Math.ceil(
+      (localSettings.customWidth * localSettings.customHeight) / 2
+    );
   } else {
     limit = gridSize === '4x4' ? 8 : 18;
   }
 
-  const { data: themeData, isLoading: isLoadingTheme, error: themeError } = useQuery({
+  const {
+    data: themeData,
+    isLoading: isLoadingTheme,
+    error: themeError,
+  } = useQuery({
     queryKey: ['theme', localSettings.iconTheme, limit],
     queryFn: () => gameApi.getTheme(localSettings.iconTheme!, limit),
     enabled: isDynamicIconTheme,
@@ -68,14 +91,23 @@ export default function HomePage() {
 
   const handleStartGame = async () => {
     // Don't allow starting with 'custom' grid size if dimensions not set
-    if (localSettings.gridSize === 'custom' && (!localSettings.customWidth || !localSettings.customHeight)) {
-      setErrorMessage(mounted ? 'Veuillez configurer la taille personnalisée de la grille.' : 'Please configure the custom grid size.');
+    if (
+      localSettings.gridSize === 'custom' &&
+      (!localSettings.customWidth || !localSettings.customHeight)
+    ) {
+      setErrorMessage(
+        mounted
+          ? 'Veuillez configurer la taille personnalisée de la grille.'
+          : 'Please configure the custom grid size.'
+      );
       setShowErrorModal(true);
       return;
     }
 
-    const finalPlayerNames = localSettings.playerNames.map((name, index) =>
-      name.trim() || (mounted ? `${t('player')} ${index + 1}` : `Player ${index + 1}`)
+    const finalPlayerNames = localSettings.playerNames.map(
+      (name, index) =>
+        name.trim() ||
+        (mounted ? `${t('player')} ${index + 1}` : `Player ${index + 1}`)
     );
     const finalSettings = { ...localSettings, playerNames: finalPlayerNames };
     setSettings(finalSettings);
@@ -87,12 +119,20 @@ export default function HomePage() {
       }
       if (themeError) {
         console.error('Error loading theme:', themeError);
-        setErrorMessage(mounted ? 'Erreur lors du chargement du thème. Veuillez réessayer.' : 'Error loading theme. Please try again.');
+        setErrorMessage(
+          mounted
+            ? 'Erreur lors du chargement du thème. Veuillez réessayer.'
+            : 'Error loading theme. Please try again.'
+        );
         setShowErrorModal(true);
         return;
       }
       console.log('🎬 Starting game with theme data:', themeData);
-      console.log('🎬 Theme data structure:', themeData.data?.length || 0, 'items');
+      console.log(
+        '🎬 Theme data structure:',
+        themeData.data?.length || 0,
+        'items'
+      );
       if (themeData.data && themeData.data.length > 0) {
         console.log('🎬 First theme item:', themeData.data[0]);
       }
@@ -129,7 +169,7 @@ export default function HomePage() {
 
   const updateSetting = <K extends keyof typeof localSettings>(
     key: K,
-    value: typeof localSettings[K]
+    value: (typeof localSettings)[K]
   ) => {
     if (key === 'theme' && value === 'numbers') {
       // Reset iconTheme when switching to numbers
@@ -169,28 +209,28 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center p-4 sm:p-6">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4 dark:bg-slate-900 sm:p-6">
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full max-w-2xl bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl border border-gray-200 dark:border-slate-700 overflow-hidden"
+        className="w-full max-w-2xl overflow-hidden rounded-3xl border border-gray-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-slate-800 sm:p-10"
       >
         {/* Header */}
         <motion.div
           variants={itemVariants}
-          className="flex justify-between items-center mb-10"
+          className="mb-10 flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
             <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.6 }}
-              className="p-2 bg-blue-600 dark:bg-blue-500 rounded-xl"
+              className="rounded-xl bg-blue-600 p-2 dark:bg-blue-500"
             >
-              <Sparkles className="w-6 h-6 text-white" />
+              <Sparkles className="h-6 w-6 text-white" />
             </motion.div>
             <motion.h1
-              className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100"
+              className="text-3xl font-bold text-gray-900 dark:text-gray-100 sm:text-4xl"
               whileHover={{ scale: 1.02 }}
             >
               Memory Game
@@ -201,12 +241,12 @@ export default function HomePage() {
 
         <motion.div variants={containerVariants} className="space-y-6">
           {/* Player Names - First in the form */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
-            className="bg-gray-50 dark:bg-slate-900 rounded-2xl p-5 border border-gray-200 dark:border-slate-700"
+            className="rounded-2xl border border-gray-200 bg-gray-50 p-5 dark:border-slate-700 dark:bg-slate-900"
           >
-            <div className="flex items-center gap-2 mb-4">
-              <User className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div className="mb-4 flex items-center gap-2">
+              <User className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               <label className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                 {mounted ? t('playerName') : 'Player Name'}
                 {localSettings.numberOfPlayers > 1 && 's'}
@@ -222,11 +262,9 @@ export default function HomePage() {
                 >
                   <label
                     htmlFor={`player-name-${i}`}
-                    className="block text-xs text-gray-600 dark:text-gray-400 mb-1.5"
+                    className="mb-1.5 block text-xs text-gray-600 dark:text-gray-400"
                   >
-                    {mounted
-                      ? `${t('player')} ${i + 1}`
-                      : `Player ${i + 1}`}
+                    {mounted ? `${t('player')} ${i + 1}` : `Player ${i + 1}`}
                   </label>
                   <input
                     id={`player-name-${i}`}
@@ -234,11 +272,9 @@ export default function HomePage() {
                     value={localSettings.playerNames[i] || ''}
                     onChange={(e) => updatePlayerName(i, e.target.value)}
                     placeholder={
-                      mounted
-                        ? `${t('player')} ${i + 1}`
-                        : `Player ${i + 1}`
+                      mounted ? `${t('player')} ${i + 1}` : `Player ${i + 1}`
                     }
-                    className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-slate-400 border-0 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition-all"
+                    className="w-full rounded-xl border-0 bg-gray-100 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:bg-slate-700 dark:text-gray-100 dark:placeholder-slate-400 dark:focus:ring-blue-500 dark:focus:ring-offset-slate-900"
                     maxLength={20}
                   />
                 </motion.div>
@@ -247,12 +283,12 @@ export default function HomePage() {
           </motion.div>
 
           {/* Select Theme */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
-            className="bg-gray-50 dark:bg-slate-900 rounded-2xl p-5 border border-gray-200 dark:border-slate-700"
+            className="rounded-2xl border border-gray-200 bg-gray-50 p-5 dark:border-slate-700 dark:bg-slate-900"
           >
-            <div className="flex items-center gap-2 mb-4">
-              <Palette className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div className="mb-4 flex items-center gap-2">
+              <Palette className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               <label className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                 {mounted ? t('selectTheme') : 'Select Theme'}
               </label>
@@ -265,10 +301,10 @@ export default function HomePage() {
                 }}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className={`flex-1 py-3 px-4 rounded-xl font-semibold focus-visible-ring transition-all ${
+                className={`focus-visible-ring flex-1 rounded-xl px-4 py-3 font-semibold transition-all ${
                   localSettings.theme === 'numbers'
-                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
-                    : 'bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                    ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
+                    : 'bg-gray-100 text-gray-900 hover:bg-blue-50 dark:bg-slate-700 dark:text-gray-100 dark:hover:bg-blue-900/20'
                 }`}
                 aria-pressed={localSettings.theme === 'numbers'}
               >
@@ -278,10 +314,10 @@ export default function HomePage() {
                 onClick={() => updateSetting('theme', 'icons')}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className={`flex-1 py-3 px-4 rounded-xl font-semibold focus-visible-ring transition-all ${
+                className={`focus-visible-ring flex-1 rounded-xl px-4 py-3 font-semibold transition-all ${
                   localSettings.theme === 'icons'
-                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
-                    : 'bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                    ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
+                    : 'bg-gray-100 text-gray-900 hover:bg-blue-50 dark:bg-slate-700 dark:text-gray-100 dark:hover:bg-blue-900/20'
                 }`}
                 aria-pressed={localSettings.theme === 'icons'}
               >
@@ -292,34 +328,69 @@ export default function HomePage() {
 
           {/* Icon Theme Selection (only shown when icons theme is selected) */}
           {localSettings.theme === 'icons' && (
-            <motion.div 
+            <motion.div
               variants={itemVariants}
-              className="bg-gray-50 dark:bg-slate-900 rounded-2xl p-5 border border-gray-200 dark:border-slate-700"
+              className="rounded-2xl border border-gray-200 bg-gray-50 p-5 dark:border-slate-700 dark:bg-slate-900"
             >
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <div className="mb-4 flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 <label className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                   {mounted ? t('chooseCategory') : 'Choose a category'}
                 </label>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
                 {[
-                  { key: 'icons', label: mounted ? t('icons') : 'Icons', color: 'accent-cyan' },
-                  { key: 'pokemon', label: mounted ? t('pokemon') : 'Pokémon', color: 'accent-yellow' },
-                  { key: 'dogs', label: mounted ? t('dogs') : 'Dogs', color: 'accent-green' },
-                  { key: 'movies', label: mounted ? t('movies') : 'Movies', color: 'accent-pink' },
-                  { key: 'flags', label: mounted ? t('flags') : 'Flags', color: 'accent-blue' },
-                  { key: 'fruits', label: mounted ? t('fruits') : 'Fruits', color: 'accent-purple' },
+                  {
+                    key: 'icons',
+                    label: mounted ? t('icons') : 'Icons',
+                    color: 'accent-cyan',
+                  },
+                  {
+                    key: 'pokemon',
+                    label: mounted ? t('pokemon') : 'Pokémon',
+                    color: 'accent-yellow',
+                  },
+                  {
+                    key: 'dogs',
+                    label: mounted ? t('dogs') : 'Dogs',
+                    color: 'accent-green',
+                  },
+                  {
+                    key: 'movies',
+                    label: mounted ? t('movies') : 'Movies',
+                    color: 'accent-pink',
+                  },
+                  {
+                    key: 'flags',
+                    label: mounted ? t('flags') : 'Flags',
+                    color: 'accent-blue',
+                  },
+                  {
+                    key: 'fruits',
+                    label: mounted ? t('fruits') : 'Fruits',
+                    color: 'accent-purple',
+                  },
                 ].map(({ key, label }) => (
                   <motion.button
                     key={key}
-                    onClick={() => updateSetting('iconTheme', key as 'icons' | 'pokemon' | 'dogs' | 'movies' | 'flags' | 'fruits')}
+                    onClick={() =>
+                      updateSetting(
+                        'iconTheme',
+                        key as
+                          | 'icons'
+                          | 'pokemon'
+                          | 'dogs'
+                          | 'movies'
+                          | 'flags'
+                          | 'fruits'
+                      )
+                    }
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl font-semibold text-sm sm:text-base focus-visible-ring transition-all ${
+                    className={`focus-visible-ring rounded-xl px-3 py-2.5 text-sm font-semibold transition-all sm:px-4 sm:py-3 sm:text-base ${
                       localSettings.iconTheme === key
-                        ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
-                        : 'bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                        ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
+                        : 'bg-gray-100 text-gray-900 hover:bg-blue-50 dark:bg-slate-700 dark:text-gray-100 dark:hover:bg-blue-900/20'
                     }`}
                     aria-pressed={localSettings.iconTheme === key}
                   >
@@ -331,12 +402,12 @@ export default function HomePage() {
           )}
 
           {/* Number of Players */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
-            className="bg-gray-50 dark:bg-slate-900 rounded-2xl p-5 border border-gray-200 dark:border-slate-700"
+            className="rounded-2xl border border-gray-200 bg-gray-50 p-5 dark:border-slate-700 dark:bg-slate-900"
           >
-            <div className="flex items-center gap-2 mb-4">
-              <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div className="mb-4 flex items-center gap-2">
+              <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               <label className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                 {mounted ? t('numberOfPlayers') : 'Number of Players'}
               </label>
@@ -348,10 +419,10 @@ export default function HomePage() {
                   onClick={() => updateSetting('numberOfPlayers', num)}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`flex-1 py-3 px-4 rounded-xl font-semibold focus-visible-ring transition-all ${
+                  className={`focus-visible-ring flex-1 rounded-xl px-4 py-3 font-semibold transition-all ${
                     localSettings.numberOfPlayers === num
-                      ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
-                      : 'bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                      ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
+                      : 'bg-gray-100 text-gray-900 hover:bg-blue-50 dark:bg-slate-700 dark:text-gray-100 dark:hover:bg-blue-900/20'
                   }`}
                   aria-pressed={localSettings.numberOfPlayers === num}
                 >
@@ -362,12 +433,12 @@ export default function HomePage() {
           </motion.div>
 
           {/* Grid Size */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
-            className="bg-gray-50 dark:bg-slate-900 rounded-2xl p-5 border border-gray-200 dark:border-slate-700"
+            className="rounded-2xl border border-gray-200 bg-gray-50 p-5 dark:border-slate-700 dark:bg-slate-900"
           >
-            <div className="flex items-center gap-2 mb-4">
-              <Grid3x3 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div className="mb-4 flex items-center gap-2">
+              <Grid3x3 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               <label className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                 {mounted ? t('gridSize') : 'Grid Size'}
               </label>
@@ -377,10 +448,10 @@ export default function HomePage() {
                 onClick={() => handleGridSizeClick('4x4')}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className={`flex-1 py-3 px-4 rounded-xl font-semibold focus-visible-ring transition-all ${
+                className={`focus-visible-ring flex-1 rounded-xl px-4 py-3 font-semibold transition-all ${
                   localSettings.gridSize === '4x4'
-                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
-                    : 'bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                    ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
+                    : 'bg-gray-100 text-gray-900 hover:bg-blue-50 dark:bg-slate-700 dark:text-gray-100 dark:hover:bg-blue-900/20'
                 }`}
                 aria-pressed={localSettings.gridSize === '4x4'}
               >
@@ -390,10 +461,10 @@ export default function HomePage() {
                 onClick={() => handleGridSizeClick('6x6')}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className={`flex-1 py-3 px-4 rounded-xl font-semibold focus-visible-ring transition-all ${
+                className={`focus-visible-ring flex-1 rounded-xl px-4 py-3 font-semibold transition-all ${
                   localSettings.gridSize === '6x6'
-                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
-                    : 'bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                    ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
+                    : 'bg-gray-100 text-gray-900 hover:bg-blue-50 dark:bg-slate-700 dark:text-gray-100 dark:hover:bg-blue-900/20'
                 }`}
                 aria-pressed={localSettings.gridSize === '6x6'}
               >
@@ -403,19 +474,21 @@ export default function HomePage() {
                 onClick={() => handleGridSizeClick('custom')}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className={`flex-1 py-3 px-4 rounded-xl font-semibold focus-visible-ring transition-all ${
+                className={`focus-visible-ring flex-1 rounded-xl px-4 py-3 font-semibold transition-all ${
                   localSettings.gridSize === 'custom'
-                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
-                    : 'bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/20'
+                    ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
+                    : 'bg-gray-100 text-gray-900 hover:bg-blue-50 dark:bg-slate-700 dark:text-gray-100 dark:hover:bg-blue-900/20'
                 }`}
                 aria-pressed={localSettings.gridSize === 'custom'}
               >
                 {mounted ? t('custom') : 'Custom'}
-                {localSettings.gridSize === 'custom' && localSettings.customWidth && localSettings.customHeight && (
-                  <span className="block text-xs mt-1 opacity-90">
-                    {localSettings.customWidth}x{localSettings.customHeight}
-                  </span>
-                )}
+                {localSettings.gridSize === 'custom' &&
+                  localSettings.customWidth &&
+                  localSettings.customHeight && (
+                    <span className="mt-1 block text-xs opacity-90">
+                      {localSettings.customWidth}x{localSettings.customHeight}
+                    </span>
+                  )}
               </motion.button>
             </div>
           </motion.div>
@@ -424,29 +497,38 @@ export default function HomePage() {
           <motion.div variants={itemVariants}>
             <motion.button
               onClick={handleStartGame}
-              disabled={isDynamicIconTheme && (isLoadingTheme || !themeData || !!themeError)}
+              disabled={
+                isDynamicIconTheme &&
+                (isLoadingTheme || !themeData || !!themeError)
+              }
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full bg-blue-600 dark:bg-blue-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus-visible-ring disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 transition-all shadow-lg flex items-center justify-center gap-2"
+              className="focus-visible-ring flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-600"
             >
-              <Play className="w-5 h-5" />
+              <Play className="h-5 w-5" />
               {isDynamicIconTheme && isLoadingTheme
-                ? (mounted ? t('loading') : 'Loading...')
+                ? mounted
+                  ? t('loading')
+                  : 'Loading...'
                 : isDynamicIconTheme && themeError
-                ? (mounted ? 'Erreur' : 'Error')
-                : mounted
-                ? t('startGame')
-                : 'Start Game'}
+                  ? mounted
+                    ? 'Erreur'
+                    : 'Error'
+                  : mounted
+                    ? t('startGame')
+                    : 'Start Game'}
             </motion.button>
-            
+
             {/* Error message for theme loading */}
             {isDynamicIconTheme && themeError && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-sm text-red-600 dark:text-red-400 text-center mt-2"
+                className="mt-2 text-center text-sm text-red-600 dark:text-red-400"
               >
-                {mounted ? 'Erreur lors du chargement du thème. Veuillez réessayer.' : 'Error loading theme. Please try again.'}
+                {mounted
+                  ? 'Erreur lors du chargement du thème. Veuillez réessayer.'
+                  : 'Error loading theme. Please try again.'}
               </motion.div>
             )}
           </motion.div>
@@ -457,9 +539,9 @@ export default function HomePage() {
               onClick={() => router.push('/top10')}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full bg-gray-700 dark:bg-gray-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-gray-800 dark:hover:bg-gray-500 focus-visible-ring transition-all shadow-lg flex items-center justify-center gap-2"
+              className="focus-visible-ring flex w-full items-center justify-center gap-2 rounded-xl bg-gray-700 px-6 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500"
             >
-              <Trophy className="w-5 h-5" />
+              <Trophy className="h-5 w-5" />
               {mounted ? t('viewTop10') : 'View Top 10'}
             </motion.button>
           </motion.div>
@@ -480,14 +562,12 @@ export default function HomePage() {
         title={mounted ? 'Erreur' : 'Error'}
       >
         <div className="space-y-4">
-          <p className="text-gray-900 dark:text-gray-100">
-            {errorMessage}
-          </p>
+          <p className="text-gray-900 dark:text-gray-100">{errorMessage}</p>
           <motion.button
             onClick={() => setShowErrorModal(false)}
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full bg-blue-600 dark:bg-blue-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 dark:hover:bg-blue-600 focus-visible-ring transition-all shadow-md"
+            className="focus-visible-ring w-full rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white shadow-md transition-all hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
           >
             {mounted ? 'OK' : 'OK'}
           </motion.button>
@@ -496,4 +576,3 @@ export default function HomePage() {
     </div>
   );
 }
-

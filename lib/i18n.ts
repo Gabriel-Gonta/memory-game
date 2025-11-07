@@ -10,7 +10,7 @@ export const translations = {
     game: 'Jeu',
     results: 'Résultats',
     top10: 'Top 10',
-    
+
     // Home page
     selectTheme: 'Sélectionner le thème',
     numbers: 'Nombres',
@@ -29,7 +29,7 @@ export const translations = {
     waitingPlayers: 'En attente de joueurs...',
     copyCode: 'Copier le code',
     codeCopied: 'Code copié !',
-    
+
     // Game page
     restart: 'Redémarrer',
     newGame: 'Nouvelle partie',
@@ -37,7 +37,7 @@ export const translations = {
     time: 'Temps',
     moves: 'Coups',
     currentTurn: 'TOUR ACTUEL',
-    
+
     // Results page
     youDidIt: 'Vous avez réussi !',
     gameOver: 'Partie terminée !',
@@ -53,7 +53,7 @@ export const translations = {
     newRecordMessage: 'est maintenant #1 !',
     newRecordMessageYou: 'Vous êtes maintenant #1 !',
     congratulations: 'Félicitations pour ce score exceptionnel !',
-    
+
     // Top 10 page
     top10Scores: 'Top 10 des scores',
     totalGames: 'Total des parties',
@@ -67,12 +67,12 @@ export const translations = {
     pair: 'Paire',
     move: 'coup',
     noScoresYet: 'Aucun score pour le moment. Soyez le premier à jouer !',
-    
+
     // Player names
     player: 'Joueur',
     playerName: 'Nom du joueur',
     enterPlayerName: 'Entrez le nom du joueur',
-    
+
     // Icon themes
     chooseCategory: 'Choisir une catégorie',
     pokemon: 'Pokémon',
@@ -88,7 +88,7 @@ export const translations = {
     game: 'Game',
     results: 'Results',
     top10: 'Top 10',
-    
+
     // Home page
     selectTheme: 'Select Theme',
     numbers: 'Numbers',
@@ -107,7 +107,7 @@ export const translations = {
     waitingPlayers: 'Waiting for players...',
     copyCode: 'Copy Code',
     codeCopied: 'Code copied!',
-    
+
     // Game page
     restart: 'Restart',
     newGame: 'New Game',
@@ -115,7 +115,7 @@ export const translations = {
     time: 'Time',
     moves: 'Moves',
     currentTurn: 'CURRENT TURN',
-    
+
     // Results page
     youDidIt: 'You did it!',
     gameOver: 'Game Over!',
@@ -131,7 +131,7 @@ export const translations = {
     newRecordMessage: 'is now #1!',
     newRecordMessageYou: 'You are now #1!',
     congratulations: 'Congratulations on this exceptional score!',
-    
+
     // Top 10 page
     top10Scores: 'Top 10 Scores',
     totalGames: 'Total Games',
@@ -145,12 +145,12 @@ export const translations = {
     pair: 'Pair',
     move: 'move',
     noScoresYet: 'No scores yet. Be the first to play!',
-    
+
     // Player names
     player: 'Player',
     playerName: 'Player Name',
     enterPlayerName: 'Enter player name',
-    
+
     // Icon themes
     chooseCategory: 'Choose a category',
     pokemon: 'Pokémon',
@@ -187,4 +187,3 @@ export const useI18nStore = create<I18nStore>()(
     }
   )
 );
-

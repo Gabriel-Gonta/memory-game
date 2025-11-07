@@ -3,7 +3,13 @@ import { persist } from 'zustand/middleware';
 import { gameIcons } from './icons';
 
 export type Theme = 'numbers' | 'icons';
-export type IconTheme = 'icons' | 'pokemon' | 'dogs' | 'movies' | 'flags' | 'fruits';
+export type IconTheme =
+  | 'icons'
+  | 'pokemon'
+  | 'dogs'
+  | 'movies'
+  | 'flags'
+  | 'fruits';
 export type GridSize = '4x4' | '6x6' | 'custom';
 export type GameState = 'idle' | 'playing' | 'finished';
 
@@ -79,7 +85,7 @@ const generateCards = (
   iconTheme?: IconTheme,
   themeData?: ThemeItem[],
   customWidth?: number,
-  customHeight?: number,
+  customHeight?: number
 ): Card[] => {
   let size: number;
   if (gridSize === 'custom' && customWidth && customHeight) {
@@ -114,28 +120,45 @@ const generateCards = (
       const j = Math.floor(Math.random() * (i + 1));
       [values[i], values[j]] = [values[j], values[i]];
     }
-    cards.push(...values.map((value, index) => ({
-      id: `card-${index}`,
-      value,
-      isFlipped: false,
-      isMatched: false,
-    })));
+    cards.push(
+      ...values.map((value, index) => ({
+        id: `card-${index}`,
+        value,
+        isFlipped: false,
+        isMatched: false,
+      }))
+    );
   } else if (theme === 'icons') {
     // Check iconTheme for dynamic themes
     console.log('🔍 Checking theme condition:', {
       iconTheme,
       themeDataLength: themeData?.length || 0,
       pairs,
-      condition: iconTheme && iconTheme !== 'icons' && themeData && themeData.length >= pairs
+      condition:
+        iconTheme &&
+        iconTheme !== 'icons' &&
+        themeData &&
+        themeData.length >= pairs,
     });
-    if (iconTheme && iconTheme !== 'icons' && themeData && themeData.length > 0) {
+    if (
+      iconTheme &&
+      iconTheme !== 'icons' &&
+      themeData &&
+      themeData.length > 0
+    ) {
       // Dynamic themes (pokemon, dogs, movies, flags, fruits)
       // Use available items, even if less than pairs (some movies might be filtered out)
       const availablePairs = Math.min(themeData.length, pairs);
       const selectedItems = themeData.slice(0, availablePairs);
-      console.log('🎬 Generating cards for theme:', iconTheme, 'with', selectedItems.length, 'items');
+      console.log(
+        '🎬 Generating cards for theme:',
+        iconTheme,
+        'with',
+        selectedItems.length,
+        'items'
+      );
       console.log('🎬 First item sample:', selectedItems[0]);
-      
+
       const items: ThemeItem[] = [];
       selectedItems.forEach((item) => {
         items.push({ ...item });
@@ -155,10 +178,10 @@ const generateCards = (
         isFlipped: false,
         isMatched: false,
       }));
-      
+
       console.log('🎬 Generated cards sample:', generatedCards[0]);
       console.log('🎬 Card has image?', !!generatedCards[0]?.image);
-      
+
       cards.push(...generatedCards);
     } else {
       // Default React icons from lucide-react
@@ -173,13 +196,15 @@ const generateCards = (
         const j = Math.floor(Math.random() * (i + 1));
         [iconPairs[i], iconPairs[j]] = [iconPairs[j], iconPairs[i]];
       }
-      cards.push(...iconPairs.map((iconName, index) => ({
-        id: `card-${index}`,
-        value: iconName,
-        iconName,
-        isFlipped: false,
-        isMatched: false,
-      })));
+      cards.push(
+        ...iconPairs.map((iconName, index) => ({
+          id: `card-${index}`,
+          value: iconName,
+          iconName,
+          isFlipped: false,
+          isMatched: false,
+        }))
+      );
     }
   }
 
@@ -216,13 +241,27 @@ export const useGameStore = create<GameStore>()(
 
       initializeGame: (themeData?: ThemeItem[]) => {
         const { settings } = get();
-        console.log('🎮 initializeGame called with themeData:', themeData?.length || 0, 'items');
-        console.log('🎮 Settings:', { theme: settings.theme, iconTheme: settings.iconTheme });
+        console.log(
+          '🎮 initializeGame called with themeData:',
+          themeData?.length || 0,
+          'items'
+        );
+        console.log('🎮 Settings:', {
+          theme: settings.theme,
+          iconTheme: settings.iconTheme,
+        });
         if (themeData && themeData.length > 0) {
           console.log('🎮 First theme item:', themeData[0]);
           console.log('🎮 Theme item has image?', !!themeData[0]?.image);
         }
-        const cards = generateCards(settings.gridSize, settings.theme, settings.iconTheme, themeData, settings.customWidth, settings.customHeight);
+        const cards = generateCards(
+          settings.gridSize,
+          settings.theme,
+          settings.iconTheme,
+          themeData,
+          settings.customWidth,
+          settings.customHeight
+        );
         console.log('🎮 Generated', cards.length, 'cards');
         if (cards.length > 0) {
           console.log('🎮 First card:', cards[0]);
@@ -276,8 +315,13 @@ export const useGameStore = create<GameStore>()(
       },
 
       checkMatch: () => {
-        const { cards, flippedCards, players, currentPlayerIndex, matchedPairs } =
-          get();
+        const {
+          cards,
+          flippedCards,
+          players,
+          currentPlayerIndex,
+          matchedPairs,
+        } = get();
 
         if (flippedCards.length !== 2) return;
 
@@ -336,13 +380,13 @@ export const useGameStore = create<GameStore>()(
         } else {
           // No match - show red shake animation, then flip back after delay
           set({ mismatchedCards: [card1Id, card2Id] });
-          
+
           setTimeout(() => {
             const currentState = get();
             const currentCards = currentState.cards;
             const currentPlayers = currentState.players;
             const currentPlayerIndex = currentState.currentPlayerIndex;
-            
+
             // Ensure all unmatched cards are flipped back
             const updatedCards = currentCards.map((c) => {
               if (c.id === card1Id || c.id === card2Id) {
@@ -355,11 +399,15 @@ export const useGameStore = create<GameStore>()(
               return c;
             });
 
-            const updatedStats = { ...currentState.stats, moves: currentState.stats.moves + 1 };
+            const updatedStats = {
+              ...currentState.stats,
+              moves: currentState.stats.moves + 1,
+            };
 
             if (currentPlayers.length > 1) {
               // Switch turn in multiplayer
-              const nextIndex = (currentPlayerIndex + 1) % currentPlayers.length;
+              const nextIndex =
+                (currentPlayerIndex + 1) % currentPlayers.length;
               set({
                 cards: updatedCards,
                 flippedCards: [],
@@ -387,11 +435,11 @@ export const useGameStore = create<GameStore>()(
         if (players.length > 1) {
           const nextIndex = (currentPlayerIndex + 1) % players.length;
           // Ensure all unmatched cards are flipped back when switching turns
-          const updatedCards = cards.map((c) => 
+          const updatedCards = cards.map((c) =>
             c.isMatched ? c : { ...c, isFlipped: false }
           );
-          set({ 
-            currentPlayerIndex: nextIndex, 
+          set({
+            currentPlayerIndex: nextIndex,
             flippedCards: [],
             mismatchedCards: [], // Reset mismatched cards
             cards: updatedCards, // Ensure all cards are face down except matched ones
@@ -417,21 +465,22 @@ export const useGameStore = create<GameStore>()(
 
       updateTime: (time: number) => {
         set({
-          stats: { 
-            ...get().stats, 
+          stats: {
+            ...get().stats,
             time,
             // Ensure startTime is set if game is playing
-            startTime: get().stats.startTime || (get().gameState === 'playing' ? Date.now() : null),
+            startTime:
+              get().stats.startTime ||
+              (get().gameState === 'playing' ? Date.now() : null),
           },
         });
       },
-
     }),
     {
       name: 'memory-game-storage',
       partialize: (state) => ({
         settings: state.settings,
-        cards: state.cards.map(card => ({
+        cards: state.cards.map((card) => ({
           ...card,
           // Keep card state but reset flipped for better UX on reload
           isFlipped: false,
@@ -450,4 +499,3 @@ export const useGameStore = create<GameStore>()(
     }
   )
 );
-

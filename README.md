@@ -5,11 +5,13 @@ Un jeu de mémoire moderne et accessible développé pour Clic Campus, avec une 
 ## 🎯 Fonctionnalités
 
 ### Modes de jeu
+
 - **Solo** : Mode un joueur avec suivi du temps et des mouvements
 - **Multijoueur local** : Jusqu'à 4 joueurs avec gestion des tours par tour
 
 ### Personnalisation
-- **Thèmes** : 
+
+- **Thèmes** :
   - **Nombres** : Chiffres de 1 à 8 (grille 4×4) ou 1 à 18 (grille 6×6)
   - **Icônes** : Plusieurs catégories disponibles
     - Icônes Lucide React (par défaut)
@@ -18,12 +20,13 @@ Un jeu de mémoire moderne et accessible développé pour Clic Campus, avec une 
     - **Films** : Affiches de films populaires depuis TMDB
     - **Drapeaux** : Drapeaux de pays depuis REST Countries API
     - **Fruits** : Emojis de fruits
-- **Taille de grille** : 
+- **Taille de grille** :
   - 4×4 (16 cartes)
   - 6×6 (36 cartes)
   - **Personnalisée** : Taille de grille configurable (largeur × hauteur)
 
 ### Suivi de partie
+
 - Compteur de coups en temps réel
 - Chronomètre précis (secondes)
 - Tableau des scores (multijoueur) avec suivi par joueur
@@ -33,6 +36,7 @@ Un jeu de mémoire moderne et accessible développé pour Clic Campus, avec une 
 - **Badge "Nouveau Record"** : Affichage doré pour les records personnels
 
 ### Classements
+
 - **Page Top 10** : Classement complet avec podium pour les 3 premiers
 - **Statistiques détaillées** :
   - Nombre total de parties
@@ -45,6 +49,7 @@ Un jeu de mémoire moderne et accessible développé pour Clic Campus, avec une 
 ## 🏗️ Architecture
 
 ### Frontend
+
 - **Framework** : Next.js 14 (App Router)
 - **Language** : TypeScript
 - **Styling** : TailwindCSS
@@ -54,6 +59,7 @@ Un jeu de mémoire moderne et accessible développé pour Clic Campus, avec une 
 - **Icons** : Lucide React
 
 ### Backend
+
 - **Framework** : FastAPI
 - **Language** : Python 3.12+
 - **ORM** : SQLModel
@@ -64,17 +70,20 @@ Un jeu de mémoire moderne et accessible développé pour Clic Campus, avec une 
 ### Justification des choix techniques
 
 #### Zustand pour la gestion d'état
+
 - **Léger** : Bundle size minimal comparé à Redux
 - **Simple** : API intuitive, moins de boilerplate
 - **Performant** : Re-renders optimisés
 - **Persistance** : Support natif via middleware pour sauvegarder la partie en cours
 
 #### TanStack Query
+
 - **Cache intelligent** : Réduit les appels API inutiles
 - **Gestion d'erreurs** : Built-in error handling et retry logic
 - **Optimistic updates** : Améliore l'UX
 
 #### SQLModel
+
 - **Type-safe** : Combinaison de SQLAlchemy et Pydantic
 - **Validation** : Validation automatique des données
 - **Migrations** : Compatible avec Alembic si nécessaire
@@ -127,6 +136,7 @@ memory-game/
 ## 🚀 Installation et lancement
 
 ### Prérequis
+
 - Node.js 20+
 - Python 3.12+
 - Docker et Docker Compose (optionnel, pour le déploiement)
@@ -134,6 +144,7 @@ memory-game/
 ### Installation locale
 
 #### Frontend
+
 ```bash
 # Installer les dépendances
 npm install
@@ -147,6 +158,7 @@ Le frontend sera accessible sur `http://localhost:3000`
 #### Backend
 
 **Configuration manuelle**
+
 ```bash
 cd backend
 
@@ -169,6 +181,7 @@ cp .env.example .env
 ```
 
 **Lancer le serveur :**
+
 ```bash
 cd backend
 source venv/bin/activate  # Activer l'environnement virtuel
@@ -190,6 +203,7 @@ docker compose up -d --build
 ```
 
 Les services seront accessibles sur :
+
 - Frontend : `http://localhost:3000`
 - Backend : `http://localhost:8000`
 - PostgreSQL : `localhost:5432`
@@ -199,6 +213,7 @@ Les services seront accessibles sur :
 ### Variables d'environnement
 
 #### Backend (.env)
+
 ```env
 DATABASE_URL=sqlite:///./memory_game.db
 # ou pour PostgreSQL
@@ -206,12 +221,15 @@ DATABASE_URL=postgresql://user:password@localhost/memory_game
 ```
 
 #### Frontend
+
 Par défaut, le frontend utilise `http://localhost:8000` pour l'API. Pour Docker, configurez `NEXT_PUBLIC_API_URL` dans `docker-compose.yml`.
 
 #### Accès depuis le réseau local
+
 Le frontend et le backend sont configurés pour accepter les connexions depuis le réseau local, permettant d'accéder à l'application depuis un téléphone ou un autre appareil sur le même réseau Wi-Fi.
 
 **Pour accéder depuis un téléphone :**
+
 1. Démarrez le frontend : `npm run dev` (écoute sur `0.0.0.0:3000`)
 2. Démarrez le backend : `make backend` ou `uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`
 3. Trouvez votre IP locale : `ifconfig | grep "inet " | grep -v 127.0.0.1` (macOS/Linux) ou `ipconfig` (Windows)
@@ -224,11 +242,11 @@ Le frontend et le backend sont configurés pour accepter les connexions depuis l
    - Sélectionner la taille de grille (4×4, 6×6, ou personnalisée)
    - Définir le nombre de joueurs (1 à 4)
    - Entrer les noms des joueurs
-2. **Jouer** : 
+2. **Jouer** :
    - Cliquez sur les cartes pour les retourner et trouver les paires
    - En mode multijoueur, les tours alternent automatiquement
    - Le chronomètre et le compteur de coups sont mis à jour en temps réel
-3. **Fin de partie** : 
+3. **Fin de partie** :
    - Les résultats s'affichent automatiquement avec les statistiques
    - Animation de victoire
    - Si vous battez le record, une animation spéciale s'affiche
@@ -261,6 +279,7 @@ pytest tests/ -v
 ```
 
 Les tests couvrent :
+
 - Création et validation des scores
 - Endpoints TOP 10 et statistiques
 - Validation des schémas Pydantic
@@ -270,11 +289,13 @@ Les tests couvrent :
 ### Linting
 
 #### Frontend
+
 ```bash
 npm run lint
 ```
 
 ### Type checking
+
 ```bash
 npm run type-check
 ```
@@ -282,9 +303,11 @@ npm run type-check
 ## 📊 API Endpoints
 
 ### POST `/api/scores`
+
 Crée un nouveau score.
 
 **Body** :
+
 ```json
 {
   "player_name": "Player 1",
@@ -297,9 +320,11 @@ Crée un nouveau score.
 ```
 
 ### GET `/api/scores/top?limit=10`
+
 Récupère les top scores (par défaut 10).
 
 **Response** :
+
 ```json
 [
   {
@@ -317,9 +342,11 @@ Récupère les top scores (par défaut 10).
 ```
 
 ### GET `/api/scores/statistics`
+
 Récupère les statistiques globales.
 
 **Response** :
+
 ```json
 {
   "total_participations": 150,
@@ -333,13 +360,16 @@ Récupère les statistiques globales.
 ```
 
 ### GET `/api/themes/{theme_name}?limit=18`
+
 Récupère les données d'un thème dynamique (Pokemon, dogs, movies, flags, fruits).
 
 **Paramètres** :
+
 - `theme_name` : Nom du thème (pokemon, dogs, movies, flags, fruits)
 - `limit` : Nombre d'éléments à récupérer (par défaut 18)
 
 **Response** :
+
 ```json
 {
   "theme": "pokemon",
@@ -366,7 +396,7 @@ Le design adopte une approche moderne et professionnelle :
 
 - **Typographie** : Sans-serif moderne et lisible (système)
 - **Formes** : Bordures arrondies (rounded-2xl, rounded-3xl) pour un look moderne
-- **Animations** : 
+- **Animations** :
   - Transitions fluides avec Framer Motion
   - Animations 3D pour le retournement des cartes (CSS transform)
   - Animations de victoire et nouveau record
@@ -377,40 +407,40 @@ Le design adopte une approche moderne et professionnelle :
 
 Toutes les fonctionnalités bonus ont été implémentées et améliorées :
 
-- [x] **Mode dark/light** : 
+- [x] **Mode dark/light** :
   - Système de thème avec détection automatique du système
   - Choix manuel (Light/Dark/System)
   - Persistance de la préférence utilisateur
   - Support complet sur toutes les pages
 
-- [x] **Animations de flip 3D** : 
+- [x] **Animations de flip 3D** :
   - Animations CSS 3D fluides pour le retournement des cartes
   - Effets de shake pour les erreurs
   - Animations de match avec rotation
 
-- [x] **Sauvegarde de partie** : 
+- [x] **Sauvegarde de partie** :
   - Persistance complète dans localStorage via Zustand
   - Reprise après rafraîchissement de la page
   - Sauvegarde automatique de l'état de jeu
 
-- [x] **TypeScript et Linter** : 
+- [x] **TypeScript et Linter** :
   - Configuration complète ESLint et Prettier pour le frontend
   - Ruff avec règles strictes pour Python
   - Type checking intégré
 
-- [x] **Pipeline CI/CD** : 
+- [x] **Pipeline CI/CD** :
   - GitHub Actions avec lint, build, et tests
   - Tests frontend (ESLint, Prettier, TypeScript)
   - Tests backend (pytest avec couverture complète)
   - Build automatique
 
-- [x] **Internationalisation (i18n)** : 
+- [x] **Internationalisation (i18n)** :
   - Support complet FR/EN
   - Sélecteur de langue dans l'interface
   - Traductions pour toutes les pages et composants
   - Persistance de la langue choisie
 
-- [x] **Thèmes dynamiques via API** : 
+- [x] **Thèmes dynamiques via API** :
   - Endpoint backend `/api/themes/{theme_name}`
   - Thèmes disponibles : Pokémon, Chiens, Films, Drapeaux, Fruits
   - Validation des images avant retour
@@ -440,4 +470,3 @@ Ce projet est développé dans le cadre d'un test technique pour Clic Campus.
 ---
 
 Développé par Gabriel Gonta pour Clic Campus
-

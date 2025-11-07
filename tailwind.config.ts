@@ -36,8 +36,8 @@ const config: Config = {
         },
       },
       borderRadius: {
-        'card': '1rem',
-        'button': '0.75rem',
+        card: '1rem',
+        button: '0.75rem',
       },
     },
   },
@@ -45,4 +45,3 @@ const config: Config = {
 };
 
 export default config;
-

@@ -30,7 +30,7 @@ export function SettingsMenu() {
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="p-2.5 rounded-xl bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 border border-gray-200 dark:border-slate-700 focus-visible-ring transition-all shadow-sm"
+        className="focus-visible-ring rounded-xl border border-gray-200 bg-white p-2.5 text-gray-700 shadow-sm transition-all hover:bg-blue-50 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-slate-700 dark:hover:text-blue-400"
         aria-label="Settings"
         aria-expanded={isOpen}
       >
@@ -46,28 +46,31 @@ export function SettingsMenu() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black/20 dark:bg-black/40 z-40"
+              className="fixed inset-0 z-40 bg-black/20 dark:bg-black/40"
               onClick={() => setIsOpen(false)}
             />
-            
+
             {/* Menu */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="absolute right-0 top-14 w-72 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 z-50 overflow-hidden"
+              className="absolute right-0 top-14 z-50 w-72 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-800"
             >
-              <div className="p-4 space-y-4">
+              <div className="space-y-4 p-4">
                 {/* Language Section */}
                 <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Languages size={18} className="text-blue-600 dark:text-blue-400" />
+                  <div className="mb-3 flex items-center gap-2">
+                    <Languages
+                      size={18}
+                      className="text-blue-600 dark:text-blue-400"
+                    />
                     <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                       Language
                     </span>
                   </div>
-                  <div className="flex gap-2 bg-gray-50 dark:bg-slate-900 rounded-xl p-1.5">
+                  <div className="flex gap-2 rounded-xl bg-gray-50 p-1.5 dark:bg-slate-900">
                     {languages.map((lang) => (
                       <motion.button
                         key={lang.value}
@@ -77,10 +80,10 @@ export function SettingsMenu() {
                         }}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+                        className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold transition-all ${
                           language === lang.value
-                            ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-slate-800'
+                            ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
+                            : 'text-gray-700 hover:bg-white dark:text-gray-300 dark:hover:bg-slate-800'
                         }`}
                       >
                         <span className="text-base">{lang.flag}</span>
@@ -92,13 +95,16 @@ export function SettingsMenu() {
 
                 {/* Theme Section */}
                 <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Sun size={18} className="text-blue-600 dark:text-blue-400" />
+                  <div className="mb-3 flex items-center gap-2">
+                    <Sun
+                      size={18}
+                      className="text-blue-600 dark:text-blue-400"
+                    />
                     <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                       Theme
                     </span>
                   </div>
-                  <div className="grid grid-cols-3 gap-2 bg-gray-50 dark:bg-slate-900 rounded-xl p-1.5">
+                  <div className="grid grid-cols-3 gap-2 rounded-xl bg-gray-50 p-1.5 dark:bg-slate-900">
                     {modes.map((m) => (
                       <motion.button
                         key={m.value}
@@ -108,15 +114,17 @@ export function SettingsMenu() {
                         }}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`flex flex-col items-center justify-center gap-1.5 px-2 py-3 rounded-lg text-xs font-semibold transition-all ${
+                        className={`flex flex-col items-center justify-center gap-1.5 rounded-lg px-2 py-3 text-xs font-semibold transition-all ${
                           mode === m.value
-                            ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-slate-800'
+                            ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
+                            : 'text-gray-700 hover:bg-white dark:text-gray-300 dark:hover:bg-slate-800'
                         }`}
                         title={m.label}
                       >
                         <span className="flex-shrink-0">{m.icon}</span>
-                        <span className="text-[10px] leading-tight">{m.label}</span>
+                        <span className="text-[10px] leading-tight">
+                          {m.label}
+                        </span>
                       </motion.button>
                     ))}
                   </div>
@@ -129,4 +137,3 @@ export function SettingsMenu() {
     </div>
   );
 }
-

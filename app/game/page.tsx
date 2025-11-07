@@ -73,7 +73,7 @@ export default function GamePage() {
     if (!currentStats.startTime) {
       if (currentStats.time > 0) {
         // Game was restored - calculate startTime to continue from saved time
-        const adjustedStartTime = Date.now() - (currentStats.time * 1000);
+        const adjustedStartTime = Date.now() - currentStats.time * 1000;
         useGameStore.setState({
           stats: {
             ...currentStats,
@@ -95,7 +95,9 @@ export default function GamePage() {
     const interval = setInterval(() => {
       const currentStats = useGameStore.getState().stats;
       if (currentStats.startTime) {
-        const elapsed = Math.floor((Date.now() - currentStats.startTime) / 1000);
+        const elapsed = Math.floor(
+          (Date.now() - currentStats.startTime) / 1000
+        );
         updateTime(elapsed);
       }
     }, 1000);
@@ -154,7 +156,7 @@ export default function GamePage() {
   // Wait for hydration before showing anything
   if (!isHydrated) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-slate-900">
         <div className="text-gray-600 dark:text-gray-400">Chargement...</div>
       </div>
     );
@@ -166,11 +168,12 @@ export default function GamePage() {
     return null;
   }
 
-  const winner = players.length > 1
-    ? players.reduce((max, player) =>
-        player.score > max.score ? player : max
-      )
-    : null;
+  const winner =
+    players.length > 1
+      ? players.reduce((max, player) =>
+          player.score > max.score ? player : max
+        )
+      : null;
 
   return (
     <>
@@ -182,64 +185,64 @@ export default function GamePage() {
         />
       )}
 
-      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-4 sm:p-6">
-        <div className="max-w-5xl mx-auto">
+      <div className="min-h-screen bg-gray-50 p-4 dark:bg-slate-900 sm:p-6">
+        <div className="mx-auto max-w-5xl">
           {/* Header */}
           <motion.header
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex justify-between items-center mb-6 sm:mb-8 gap-4"
+            className="mb-6 flex items-center justify-between gap-4 sm:mb-8"
           >
             <div className="flex items-center gap-3">
               <motion.div
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6 }}
-                className="p-2 bg-blue-600 dark:bg-blue-500 rounded-xl"
+                className="rounded-xl bg-blue-600 p-2 dark:bg-blue-500"
               >
-                <Sparkles className="w-5 h-5 text-white" />
+                <Sparkles className="h-5 w-5 text-white" />
               </motion.div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 sm:text-3xl">
                 Memory Game
               </h1>
             </div>
             {/* Desktop buttons */}
-            <div className="hidden sm:flex gap-2 sm:gap-3 flex-shrink-0">
+            <div className="hidden flex-shrink-0 gap-2 sm:flex sm:gap-3">
               <motion.button
                 onClick={handleRestart}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 bg-gray-700 dark:bg-gray-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:bg-gray-800 dark:hover:bg-gray-500 focus-visible-ring text-sm sm:text-base transition-all shadow-md"
+                className="focus-visible-ring flex items-center gap-2 rounded-xl bg-gray-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 sm:px-6 sm:py-3 sm:text-base"
               >
-                <RotateCcw className="w-4 h-4" />
+                <RotateCcw className="h-4 w-4" />
                 {mounted ? t('restart') : 'Restart'}
               </motion.button>
               <motion.button
                 onClick={handleNewGame}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 bg-gray-700 dark:bg-gray-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:bg-gray-800 dark:hover:bg-gray-500 focus-visible-ring text-sm sm:text-base transition-all shadow-md"
+                className="focus-visible-ring flex items-center gap-2 rounded-xl bg-gray-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 sm:px-6 sm:py-3 sm:text-base"
               >
-                <Play className="w-4 h-4" />
+                <Play className="h-4 w-4" />
                 {mounted ? t('newGame') : 'New Game'}
               </motion.button>
               <motion.button
                 onClick={() => router.push('/home')}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 bg-gray-700 dark:bg-gray-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:bg-gray-800 dark:hover:bg-gray-500 focus-visible-ring text-sm sm:text-base transition-all shadow-md"
+                className="focus-visible-ring flex items-center gap-2 rounded-xl bg-gray-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 sm:px-6 sm:py-3 sm:text-base"
               >
-                <X className="w-4 h-4" />
+                <X className="h-4 w-4" />
                 {mounted ? t('quit') : 'Quit'}
               </motion.button>
             </div>
             {/* Mobile menu */}
-            <div className="sm:hidden flex-shrink-0">
+            <div className="flex-shrink-0 sm:hidden">
               <Menu onRestart={handleRestart} onNewGame={handleNewGame} />
             </div>
           </motion.header>
 
           {/* Game Grid */}
-          <div className="flex justify-center mb-6 sm:mb-8 px-4 mt-8 sm:mt-12">
+          <div className="mb-6 mt-8 flex justify-center px-4 sm:mb-8 sm:mt-12">
             <div className="w-full max-w-fit">
               <GameGrid
                 cards={cards}
@@ -262,4 +265,3 @@ export default function GamePage() {
     </>
   );
 }
-

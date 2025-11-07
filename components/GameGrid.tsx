@@ -10,10 +10,15 @@ interface GameGridProps {
   mismatchedCards?: string[];
 }
 
-export function GameGrid({ cards, gridSize, onCardClick, mismatchedCards = [] }: GameGridProps) {
+export function GameGrid({
+  cards,
+  gridSize,
+  onCardClick,
+  mismatchedCards = [],
+}: GameGridProps) {
   const { settings } = useGameStore();
   let columns: number;
-  
+
   if (gridSize === 'custom' && settings.customWidth) {
     columns = settings.customWidth;
   } else {
@@ -31,8 +36,13 @@ export function GameGrid({ cards, gridSize, onCardClick, mismatchedCards = [] }:
         columns = 4;
     }
   }
-  
-  const gapClass = columns <= 4 ? 'gap-3 sm:gap-4' : columns <= 6 ? 'gap-2 sm:gap-3' : 'gap-1 sm:gap-2';
+
+  const gapClass =
+    columns <= 4
+      ? 'gap-3 sm:gap-4'
+      : columns <= 6
+        ? 'gap-2 sm:gap-3'
+        : 'gap-1 sm:gap-2';
 
   return (
     <div
@@ -53,4 +63,3 @@ export function GameGrid({ cards, gridSize, onCardClick, mismatchedCards = [] }:
     </div>
   );
 }
-

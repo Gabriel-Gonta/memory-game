@@ -8,11 +8,11 @@ services:
       POSTGRES_PASSWORD: memory_game_password
       POSTGRES_DB: memory_game
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U memory_game"]
+      test: ['CMD-SHELL', 'pg_isready -U memory_game']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -24,7 +24,7 @@ services:
     environment:
       DATABASE_URL: postgresql://memory_game:memory_game_password@postgres:5432/memory_game
     ports:
-      - "8000:8000"
+      - '8000:8000'
     volumes:
       - ./backend/app:/app/app
     depends_on:
@@ -37,7 +37,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_API_URL=http://backend:8000
@@ -46,4 +46,3 @@ services:
 
 volumes:
   postgres_data:
-

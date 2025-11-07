@@ -24,22 +24,24 @@ export function GameStats({
 
   if (isMultiplayer) {
     return (
-      <div className="flex gap-3 sm:gap-4 justify-center flex-wrap px-4">
+      <div className="flex flex-wrap justify-center gap-3 px-4 sm:gap-4">
         {players.map((player, index) => (
           <div
             key={player.id}
-            className={`rounded-xl px-4 sm:px-6 py-3 min-w-[100px] sm:min-w-[120px] text-center shadow-md transition-all ${
+            className={`min-w-[100px] rounded-xl px-4 py-3 text-center shadow-md transition-all sm:min-w-[120px] sm:px-6 ${
               index === currentPlayerIndex
-                ? 'bg-blue-600 dark:bg-blue-500 text-white glow-primary subtle-pulse'
-                : 'bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 hover:scale-105'
+                ? 'glow-primary subtle-pulse bg-blue-600 text-white dark:bg-blue-500'
+                : 'bg-white text-gray-900 hover:scale-105 dark:bg-slate-800 dark:text-gray-100'
             }`}
           >
-            <div className="text-xs sm:text-sm font-semibold mb-1">
+            <div className="mb-1 text-xs font-semibold sm:text-sm">
               {player.name}
             </div>
-            <div className="text-xl sm:text-2xl font-bold">{player.score}</div>
+            <div className="text-xl font-bold sm:text-2xl">{player.score}</div>
             {index === currentPlayerIndex && (
-              <div className="text-xs mt-1 font-semibold opacity-90">CURRENT TURN</div>
+              <div className="mt-1 text-xs font-semibold opacity-90">
+                CURRENT TURN
+              </div>
             )}
           </div>
         ))}
@@ -48,30 +50,27 @@ export function GameStats({
   }
 
   return (
-    <div className="flex gap-3 sm:gap-4 justify-center px-4">
+    <div className="flex justify-center gap-3 px-4 sm:gap-4">
       <motion.div
         whileHover={{ scale: 1.05, y: -2 }}
-        className="bg-blue-600 dark:bg-blue-500 text-white rounded-xl px-4 sm:px-6 py-3 text-center min-w-[100px] sm:min-w-[120px] shadow-md transition-all"
+        className="min-w-[100px] rounded-xl bg-blue-600 px-4 py-3 text-center text-white shadow-md transition-all dark:bg-blue-500 sm:min-w-[120px] sm:px-6"
       >
-        <div className="text-xs sm:text-sm font-semibold mb-1 opacity-90">
+        <div className="mb-1 text-xs font-semibold opacity-90 sm:text-sm">
           Time
         </div>
-        <div className="text-xl sm:text-2xl font-bold">
+        <div className="text-xl font-bold sm:text-2xl">
           {formatTime(stats.time)}
         </div>
       </motion.div>
       <motion.div
         whileHover={{ scale: 1.05, y: -2 }}
-        className="bg-blue-600 dark:bg-blue-500 text-white rounded-xl px-4 sm:px-6 py-3 text-center min-w-[100px] sm:min-w-[120px] shadow-md transition-all"
+        className="min-w-[100px] rounded-xl bg-blue-600 px-4 py-3 text-center text-white shadow-md transition-all dark:bg-blue-500 sm:min-w-[120px] sm:px-6"
       >
-        <div className="text-xs sm:text-sm font-semibold mb-1 opacity-90">
+        <div className="mb-1 text-xs font-semibold opacity-90 sm:text-sm">
           Moves
         </div>
-        <div className="text-xl sm:text-2xl font-bold">
-          {stats.moves}
-        </div>
+        <div className="text-xl font-bold sm:text-2xl">{stats.moves}</div>
       </motion.div>
     </div>
   );
 }
-

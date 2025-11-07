@@ -8,7 +8,10 @@ interface VictoryAnimationProps {
   winnerName?: string;
 }
 
-export function VictoryAnimation({ isMultiplayer, winnerName }: VictoryAnimationProps) {
+export function VictoryAnimation({
+  isMultiplayer,
+  winnerName,
+}: VictoryAnimationProps) {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -51,21 +54,27 @@ export function VictoryAnimation({ isMultiplayer, winnerName }: VictoryAnimation
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm dark:bg-black/70"
     >
       {/* Confetti/Particles effect */}
       <div className="absolute inset-0 overflow-hidden">
         {Array.from({ length: 20 }).map((_, i) => {
-          const colors = ['#3B82F6', '#60A5FA', '#10B981', '#8B5CF6', '#EC4899'];
+          const colors = [
+            '#3B82F6',
+            '#60A5FA',
+            '#10B981',
+            '#8B5CF6',
+            '#EC4899',
+          ];
           const randomColor = colors[Math.floor(Math.random() * colors.length)];
           const randomX = (Math.random() - 0.5) * 200;
           const randomDelay = Math.random() * 0.5;
           const randomDuration = 2 + Math.random() * 2;
-          
+
           return (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 rounded-full"
+              className="absolute h-2 w-2 rounded-full"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -91,34 +100,46 @@ export function VictoryAnimation({ isMultiplayer, winnerName }: VictoryAnimation
       {/* Main victory card */}
       <motion.div
         variants={itemVariants}
-        className="relative bg-white dark:bg-slate-800 rounded-2xl p-8 sm:p-12 shadow-2xl border border-gray-200 dark:border-slate-700 max-w-md w-full mx-4 text-center"
+        className="relative mx-4 w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-2xl dark:border-slate-700 dark:bg-slate-800 sm:p-12"
       >
         {/* Sparkles around trophy */}
-        <div className="absolute -top-4 -right-4">
+        <div className="absolute -right-4 -top-4">
           <motion.div variants={sparkleVariants} animate="animate">
-            <Sparkles className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400" />
           </motion.div>
         </div>
-        <div className="absolute -top-4 -left-4">
-          <motion.div variants={sparkleVariants} animate="animate" style={{ animationDelay: '0.5s' }}>
-            <Sparkles className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+        <div className="absolute -left-4 -top-4">
+          <motion.div
+            variants={sparkleVariants}
+            animate="animate"
+            style={{ animationDelay: '0.5s' }}
+          >
+            <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400" />
           </motion.div>
         </div>
         <div className="absolute -bottom-4 -right-4">
-          <motion.div variants={sparkleVariants} animate="animate" style={{ animationDelay: '1s' }}>
-            <Sparkles className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+          <motion.div
+            variants={sparkleVariants}
+            animate="animate"
+            style={{ animationDelay: '1s' }}
+          >
+            <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400" />
           </motion.div>
         </div>
         <div className="absolute -bottom-4 -left-4">
-          <motion.div variants={sparkleVariants} animate="animate" style={{ animationDelay: '1.5s' }}>
-            <Sparkles className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+          <motion.div
+            variants={sparkleVariants}
+            animate="animate"
+            style={{ animationDelay: '1.5s' }}
+          >
+            <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400" />
           </motion.div>
         </div>
 
         {/* Trophy icon */}
         <motion.div
           variants={itemVariants}
-          className="flex justify-center mb-4"
+          className="mb-4 flex justify-center"
         >
           <motion.div
             animate={{
@@ -131,23 +152,29 @@ export function VictoryAnimation({ isMultiplayer, winnerName }: VictoryAnimation
               ease: 'easeInOut',
             }}
           >
-            <Trophy className="w-20 h-20 text-blue-600 dark:text-blue-400" />
+            <Trophy className="h-20 w-20 text-blue-600 dark:text-blue-400" />
           </motion.div>
         </motion.div>
 
         {/* Victory message */}
         <motion.h2
           variants={itemVariants}
-          className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2"
+          className="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100 sm:text-4xl"
         >
-          {isMultiplayer ? (winnerName ? `${winnerName} Wins!` : 'Game Over!') : 'You did it!'}
+          {isMultiplayer
+            ? winnerName
+              ? `${winnerName} Wins!`
+              : 'Game Over!'
+            : 'You did it!'}
         </motion.h2>
 
         <motion.p
           variants={itemVariants}
           className="text-lg text-gray-600 dark:text-gray-400"
         >
-          {isMultiplayer ? 'Congratulations!' : 'Congratulations! All pairs found!'}
+          {isMultiplayer
+            ? 'Congratulations!'
+            : 'Congratulations! All pairs found!'}
         </motion.p>
 
         {/* Loading indicator */}
@@ -158,7 +185,7 @@ export function VictoryAnimation({ isMultiplayer, winnerName }: VictoryAnimation
           {[0, 1, 2].map((i) => (
             <motion.div
               key={i}
-              className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400"
+              className="h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400"
               animate={{
                 scale: [1, 1.5, 1],
                 opacity: [0.5, 1, 0.5],
@@ -176,4 +203,3 @@ export function VictoryAnimation({ isMultiplayer, winnerName }: VictoryAnimation
     </motion.div>
   );
 }
-

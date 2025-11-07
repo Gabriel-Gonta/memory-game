@@ -101,4 +101,3 @@ export const gameIcons: IconInfo[] = [
 export function getIconByName(name: string): LucideIcon | undefined {
   return gameIcons.find((icon) => icon.name === name)?.component;
 }
-

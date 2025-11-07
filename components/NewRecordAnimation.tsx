@@ -12,7 +12,7 @@ interface NewRecordAnimationProps {
 export function NewRecordAnimation({ playerName }: NewRecordAnimationProps) {
   const [mounted, setMounted] = useState(false);
   const t = useTranslation();
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -74,21 +74,27 @@ export function NewRecordAnimation({ playerName }: NewRecordAnimationProps) {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 dark:bg-black/80 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md dark:bg-black/80"
     >
       {/* Confetti/Particles effect */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {Array.from({ length: 30 }).map((_, i) => {
-          const colors = ['#3B82F6', '#60A5FA', '#10B981', '#8B5CF6', '#EC4899'];
+          const colors = [
+            '#3B82F6',
+            '#60A5FA',
+            '#10B981',
+            '#8B5CF6',
+            '#EC4899',
+          ];
           const randomColor = colors[Math.floor(Math.random() * colors.length)];
           const randomX = (Math.random() - 0.5) * 300;
           const randomDelay = Math.random() * 0.8;
           const randomDuration = 2.5 + Math.random() * 2;
-          
+
           return (
             <motion.div
               key={i}
-              className="absolute w-3 h-3 rounded-full"
+              className="absolute h-3 w-3 rounded-full"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -116,7 +122,7 @@ export function NewRecordAnimation({ playerName }: NewRecordAnimationProps) {
       {/* Main record card */}
       <motion.div
         variants={itemVariants}
-        className="relative bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-10 shadow-2xl border-2 border-amber-500 dark:border-amber-400 max-w-lg w-full mx-2 sm:mx-4 text-center overflow-hidden"
+        className="relative mx-2 w-full max-w-lg overflow-hidden rounded-2xl border-2 border-amber-500 bg-white p-4 text-center shadow-2xl dark:border-amber-400 dark:bg-slate-800 sm:mx-4 sm:rounded-3xl sm:p-6 md:p-10"
       >
         {/* Sparkles around the card */}
         {[
@@ -135,12 +141,12 @@ export function NewRecordAnimation({ playerName }: NewRecordAnimationProps) {
             animate="animate"
             transition={{ delay: i * 0.2 }}
           >
-            <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-amber-500 dark:text-amber-400" />
+            <Sparkles className="h-8 w-8 text-amber-500 dark:text-amber-400 sm:h-10 sm:w-10" />
           </motion.div>
         ))}
 
         {/* Stars decoration */}
-        <div className="absolute top-4 left-4">
+        <div className="absolute left-4 top-4">
           <motion.div
             animate={{
               rotate: [0, 360],
@@ -152,10 +158,10 @@ export function NewRecordAnimation({ playerName }: NewRecordAnimationProps) {
               ease: 'easeInOut',
             }}
           >
-            <Star className="w-5 h-5 sm:w-6 sm:h-6 text-amber-500 dark:text-amber-400 fill-amber-500 dark:fill-amber-400" />
+            <Star className="h-5 w-5 fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400 sm:h-6 sm:w-6" />
           </motion.div>
         </div>
-        <div className="absolute top-4 right-4">
+        <div className="absolute right-4 top-4">
           <motion.div
             animate={{
               rotate: [360, 0],
@@ -168,48 +174,53 @@ export function NewRecordAnimation({ playerName }: NewRecordAnimationProps) {
               delay: 0.5,
             }}
           >
-            <Star className="w-5 h-5 sm:w-6 sm:h-6 text-amber-500 dark:text-amber-400 fill-amber-500 dark:fill-amber-400" />
+            <Star className="h-5 w-5 fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400 sm:h-6 sm:w-6" />
           </motion.div>
         </div>
 
         {/* Trophy icon */}
         <motion.div
           variants={itemVariants}
-          className="flex justify-center mb-6 relative z-10"
+          className="relative z-10 mb-6 flex justify-center"
         >
           <motion.div
             animate={trophyVariants.animate}
             transition={trophyVariants.transition}
             className="relative"
           >
-            <div className="absolute inset-0 bg-amber-500/30 rounded-full blur-2xl" />
-            <Trophy className="w-16 h-16 sm:w-20 sm:h-20 text-amber-500 dark:text-amber-400 relative z-10" />
+            <div className="absolute inset-0 rounded-full bg-amber-500/30 blur-2xl" />
+            <Trophy className="relative z-10 h-16 w-16 text-amber-500 dark:text-amber-400 sm:h-20 sm:w-20" />
           </motion.div>
         </motion.div>
 
         {/* Record message */}
         <motion.h2
           variants={itemVariants}
-          className="text-2xl sm:text-3xl font-bold text-amber-600 dark:text-amber-400 mb-3 relative z-10"
+          className="relative z-10 mb-3 text-2xl font-bold text-amber-600 dark:text-amber-400 sm:text-3xl"
         >
           🏆 {mounted ? t('newRecord').toUpperCase() : 'NOUVEAU RECORD !'} 🏆
         </motion.h2>
 
         <motion.p
           variants={itemVariants}
-          className="text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-gray-200 font-semibold mb-2 relative z-10 px-2"
+          className="relative z-10 mb-2 px-2 text-lg font-semibold text-gray-700 dark:text-gray-200 sm:text-xl md:text-2xl"
         >
-          {mounted 
-            ? (playerName ? `${playerName} ${t('newRecordMessage')}` : t('newRecordMessageYou'))
-            : (playerName ? `${playerName} est maintenant #1 !` : 'Vous êtes maintenant #1 !')
-          }
+          {mounted
+            ? playerName
+              ? `${playerName} ${t('newRecordMessage')}`
+              : t('newRecordMessageYou')
+            : playerName
+              ? `${playerName} est maintenant #1 !`
+              : 'Vous êtes maintenant #1 !'}
         </motion.p>
 
         <motion.p
           variants={itemVariants}
-          className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 relative z-10 px-2"
+          className="relative z-10 px-2 text-sm text-gray-600 dark:text-gray-300 sm:text-base md:text-lg"
         >
-          {mounted ? t('congratulations') : 'Félicitations pour ce score exceptionnel !'}
+          {mounted
+            ? t('congratulations')
+            : 'Félicitations pour ce score exceptionnel !'}
         </motion.p>
 
         {/* Pulsing ring effect */}
@@ -229,8 +240,3 @@ export function NewRecordAnimation({ playerName }: NewRecordAnimationProps) {
     </motion.div>
   );
 }
-
-
-
-
-

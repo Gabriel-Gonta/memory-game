@@ -67,9 +67,13 @@ export const gameApi = {
     return response.data;
   },
 
-  getTheme: async (themeName: string, limit: number = 18): Promise<ThemeResponse> => {
-    const response = await api.get<ThemeResponse>(`/themes/${themeName}?limit=${limit}`);
+  getTheme: async (
+    themeName: string,
+    limit: number = 18
+  ): Promise<ThemeResponse> => {
+    const response = await api.get<ThemeResponse>(
+      `/themes/${themeName}?limit=${limit}`
+    );
     return response.data;
   },
 };
-
